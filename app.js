@@ -48,6 +48,24 @@ app.post("/register", (req, res) => {
 	});
 });
 
+app.post("/login", (req, res) => {
+	User.findOne({ email: req.body.username }, (err, foundUser) => {
+		if (err) {
+			res.send(err);
+		} else {
+			if (foundUser === null || foundUser === "") {
+				res.send("User not found!");
+			} else {
+				if (foundUser.password == req.body.password) {
+					res.render("secrets");
+				} else {
+					res.send("Wrong password! Try again.");
+				}
+			}
+		}
+	});
+});
+
 app.listen(3000, () => {
 	console.log("Server started at 3000.");
 });
